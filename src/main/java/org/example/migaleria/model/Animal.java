@@ -7,28 +7,31 @@ import jakarta.persistence.*;
 public class Animal {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String name;
-    private double deep;
+    private Double deep;
     @Column(columnDefinition = "TEXT")
     private String description;
     private String ocean;
+    @Column(columnDefinition = "TEXT")
+    private String urlImagen;
 
-    public Animal(String name, double deep, String description, String ocean) {
+    public Animal(String name, Double deep, String description, String ocean, String urlImagen) {
         this.name = name;
         this.deep = deep;
         this.description = description;
         this.ocean = ocean;
+        this.urlImagen = urlImagen;
     }
 
     public Animal() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,11 +43,11 @@ public class Animal {
         this.name = name;
     }
 
-    public double getDeep() {
+    public Double getDeep() {
         return deep;
     }
 
-    public void setDeep(double deep) {
+    public void setDeep(Double deep) {
         this.deep = deep;
     }
 
@@ -62,5 +65,13 @@ public class Animal {
 
     public void setOcean(String ocean) {
         this.ocean = ocean;
+    }
+
+    public String getUrlImagen() {
+        return urlImagen;
+    }
+
+    public void setUrlImagen(String urlImagen) {
+        this.urlImagen = urlImagen;
     }
 }
