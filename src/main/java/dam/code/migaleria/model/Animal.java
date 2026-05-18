@@ -1,4 +1,4 @@
-package org.example.migaleria.model;
+package dam.code.migaleria.model;
 
 import jakarta.persistence.*;
 

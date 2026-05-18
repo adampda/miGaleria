@@ -1,7 +1,7 @@
-package org.example.migaleria.service;
+package dam.code.migaleria.service;
 
-import org.example.migaleria.model.Animal;
-import org.example.migaleria.repository.AnimalRepository;
+import dam.code.migaleria.model.Animal;
+import dam.code.migaleria.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

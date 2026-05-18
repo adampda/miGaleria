@@ -1,6 +1,6 @@
-package org.example.migaleria.repository;
+package dam.code.migaleria.repository;
 
-import org.example.migaleria.model.Animal;
+import dam.code.migaleria.model.Animal;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
