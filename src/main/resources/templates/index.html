@@ -5,23 +5,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería de Animales Marinos</title>
     
-    <!-- 1. Bootstrap CSS -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     
-    <!-- 2. Tu archivo de estilos personalizados -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <!-- Estilos personalizados -->
     <link rel="stylesheet" href="/src/main/resources/static/style/style.css">
 
-    <!-- 3. Scripts de React y Babel (Para que el navegador entienda React sin instalar nada) -->
+    <!-- Scripts de React y Babel -->
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
 
-    <!-- Contenedor donde se pintará la magia -->
-    <div id="root"></div>
+    <!-- Elementos del Radar del Cursor (Ahora nativos en HTML) -->
+    <div id="custom-cursor" class="custom-cursor"></div>
+    <div id="custom-cursor-dot" class="custom-cursor-dot"></div>
 
-    <!-- 4. Tu script modificado (Fíjate en el type="text/babel") -->
+    <div class="ocean-container min-vh-100 text-light">
+        
+        <!-- PANTALLA DE BIENVENIDA (ESTÁTICA) -->
+        <header class="welcome-hero container text-center">
+            <h1 class="fw-bold title-glow mb-3">Explorador del Océano</h1>
+            <p class="lead text-info fw-light mb-5 fs-4">Descubre los misterios ocultos en las profundidades marinas</p>
+            <button 
+                type="button" 
+                class="btn btn-explore text-uppercase px-5 py-3"
+                onclick="scrollToContent()"
+            >
+                Comenzar Inmersión
+            </button>
+        </header>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div id="content-section" class="py-5">
+            
+            <!-- BOTONES DE FILTROS (ESTÁTICOS) -->
+            <section class="container mb-5">
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <button class="filter-badge border-0 active" onclick="selectZone(this, 'Todos')">Todos</button>
+                    <button class="filter-badge border-0" onclick="selectZone(this, 'Superficie')">Superficie</button>
+                    <button class="filter-badge border-0" onclick="selectZone(this, 'Pelágica')">Pelágica</button>
+                    <button class="filter-badge border-0" onclick="selectZone(this, 'Abisal')">Abisal</button>
+                </div>
+            </section>
+
+            <!-- CONTENEDOR DINÁMICO DE REACT (Marquee, Catálogo, Favoritos y Modales) -->
+            <div id="react-catalog-root"></div>
+
+            <!-- SECCIÓN DE CURIOSIDADES (ESTÁTICA) -->
+            <footer class="container my-5">
+                <h3 class="text-success mb-4 text-center fw-semibold tracking-wider text-uppercase small">Datos de Inmersión</h3>
+                <div class="row g-4">
+                    <div class="col-12 col-md-4">
+                        <div class="curiosity-box h-100">
+                            <h4 class="h5 text-info mb-3 fw-bold">Presión Extrema</h4>
+                            <p class="small text-secondary mb-0 lh-base">En lo más profundo de la fosa de las Marianas, la presión es equivalente a que un elefante sostenga tu dedo pulgar.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="curiosity-box h-100">
+                            <h4 class="h5 text-info mb-3 fw-bold">Oxígeno Vital</h4>
+                            <p class="small text-secondary mb-0 lh-base">Más del 50% del oxígeno de nuestro planeta es producido por el fitoplancton marino, no por los bosques terrestres.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="curiosity-box h-100">
+                            <h4 class="h5 text-info mb-3 fw-bold">El Gran Mapa</h4>
+                            <p class="small text-secondary mb-0 lh-base">Conocemos mejor la superficie de la Luna o de Marte que el propio fondo de nuestros océanos; el 80% sigue sin cartografiar.</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- Funciones Vanilla JS de apoyo para la interfaz estática -->
+    <script>
+        function scrollToContent() {
+            document.getElementById('content-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function selectZone(buttonElement, zoneName) {
+            // Cambiar la clase activa visualmente en el HTML
+            document.querySelectorAll('.filter-badge').forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+
+            // Emitir un evento personalizado para que React se entere del cambio
+            const event = new CustomEvent('swimzoneChanged', { detail: zoneName });
+            window.dispatchEvent(event);
+        }
+    </script>
+
+    <!-- Tu script de React modificado -->
     <script type="text/babel" src="/src/main/resources/static/script/scripts.js" defer></script>
     
 </body>

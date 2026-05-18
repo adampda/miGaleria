@@ -1,29 +1,73 @@
 /* Configuración Base e Inmersión */
 body {
-  background: #020610;
+  background: #020308;
   overflow-x: hidden;
   cursor: none;
 }
 
 .ocean-container {
-  background: radial-gradient(circle at 50% 30%, #0a1931 0%, #050c1e 60%, #01040a 100%);
+  background: radial-gradient(circle at 50% 10%, #030f26 0%, #010715 50%, #000207 100%);
   background-size: 100% 100%;
 }
 
-/* Custom Cursor Ajustado (Menos Delay) */
+/* PANTALLA DE BIENVENIDA (HERO) */
+.welcome-hero {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid rgba(0, 242, 254, 0.1);
+}
+
+.btn-explore {
+  background: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 2px;
+  padding: 14px 36px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+  transition: all 0.4s ease;
+}
+
+.btn-explore:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px rgba(127, 0, 255, 0.6);
+  color: #00f2fe;
+}
+
+/* NUEVO CURSOR: RADAR SUBACUÁTICO ACTIVO */
 .custom-cursor {
-  width: 30px;
-  height: 30px;
-  border: 2px solid rgba(0, 242, 254, 0.6);
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(0, 255, 170, 0.15) 0%, transparent 80%);
+  border: 1.5px solid #00ffaa;
   border-radius: 50%;
   position: fixed;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 99999;
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 170, 0.4);
 }
 
+/* Línea de barrido del radar */
+.custom-cursor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  background: linear-gradient(90deg, rgba(0, 255, 170, 0.4), transparent);
+  transform-origin: left bottom;
+  animation: radarSweep 2s linear infinite;
+  border-radius: 0 100% 0 0;
+}
+
+/* Punto central del radar */
 .custom-cursor-dot {
   width: 6px;
   height: 6px;
@@ -33,34 +77,59 @@ body {
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 99999;
-  box-shadow: 0 0 10px #00f2fe;
+  box-shadow: 0 0 12px #00f2fe;
 }
 
+/* Animación del barrido */
+@keyframes radarSweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Al hacer Hover, el radar detecta un objetivo (se vuelve rojo/alerta y se expande) */
 body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-btn:hover) .custom-cursor {
-  width: 50px;
-  height: 50px;
-  background-color: rgba(0, 242, 254, 0.08);
-  border-color: #00ffaa;
-  box-shadow: 0 0 25px rgba(0, 255, 170, 0.5);
+  width: 60px;
+  height: 60px;
+  border-color: #ff0055;
+  background: radial-gradient(circle, rgba(255, 0, 85, 0.2) 0%, transparent 80%);
+  box-shadow: 0 0 25px rgba(255, 0, 85, 0.6);
+}
+body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-btn:hover) .custom-cursor::after {
+  background: linear-gradient(90deg, rgba(255, 0, 85, 0.5), transparent);
+}
+body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-btn:hover) .custom-cursor-dot {
+  background-color: #ff0055;
+  box-shadow: 0 0 15px #ff0055;
 }
 
-/* Título Líquido */
+/* TÍTULO DIVERTIDO Y COMPACTO (Estilo Gamer/Sci-Fi Gigante) */
 .title-glow {
-  font-size: 3.5rem;
-  background: linear-gradient(90deg, #00f2fe, #4facfe, #00ffaa, #00f2fe);
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: 4.8rem; /* Título considerablemente más grande */
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #00f2fe, #7f00ff, #00ffaa, #00f2fe);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shineTitle 6s linear infinite;
-  text-shadow: 0 0 30px rgba(0, 242, 254, 0.1);
-  letter-spacing: 4px;
+  animation: shineTitle 5s linear infinite;
+  text-shadow: 0 0 50px rgba(0, 252, 254, 0.2);
+  letter-spacing: 8px;
 }
 
 @keyframes shineTitle {
   to { background-position: 200% center; }
 }
 
-/* Sistema de Ruleta en Loop Infinito (Marquee Corregido) */
+/* Media Query para que no rompa en pantallas pequeñas */
+@media (max-width: 768px) {
+  .title-glow {
+    font-size: 2.8rem;
+    letter-spacing: 4px;
+  }
+}
+
+/* Sistema de Ruleta en Loop Infinito */
 .marquee-container {
   overflow: hidden;
   width: 100%;
@@ -80,15 +149,14 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
 
 .marquee-container::before {
   left: 0;
-  background: linear-gradient(to right, #020610, transparent);
+  background: linear-gradient(to right, #020308, transparent);
 }
 
 .marquee-container::after {
   right: 0;
-  background: linear-gradient(to left, #020610, transparent);
+  background: linear-gradient(to left, #020308, transparent);
 }
 
-/* El contenedor se desplaza exactamente el 50% de su ancho total */
 .marquee-track {
   display: flex;
   width: max-content;
@@ -99,16 +167,15 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
   animation-play-state: paused;
 }
 
-/* Grupos gemelos idénticos */
 .marquee-group {
   display: flex;
   gap: 2rem;
-  padding-right: 2rem; /* Obligatorio: compensa el hueco exacto entre el bloque 1 y el bloque 2 */
+  padding-right: 2rem;
 }
 
 @keyframes scrollMarquee {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); } /* El reinicio ahora es imperceptible */
+  100% { transform: translateX(-50%); }
 }
 
 /* Filas Estándar */
@@ -120,22 +187,21 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
   scroll-behavior: smooth;
 }
 
-.netflix-row::-webkit-scrollbar { height: 4px; }
-.netflix-row::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.2); border-radius: 10px; }
-
 /* Tarjetas */
 .netflix-card {
   flex: 0 0 auto;
   width: 300px;
   border-radius: 12px;
   overflow: hidden;
-  background-color: #060d1f !important;
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+  background-color: #040a17 !important;
+  border: 1px solid rgba(0, 242, 254, 0.05) !important;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s;
 }
 
 .netflix-card:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 35px rgba(0, 242, 254, 0.25) !important;
+  border-color: rgba(127, 0, 255, 0.4) !important;
+  box-shadow: 0 15px 35px rgba(127, 0, 255, 0.25) !important;
 }
 
 .card-img-wrapper {
@@ -156,7 +222,7 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
 }
 
 .overlay-smooth {
-  background: linear-gradient(to top, #060d1f 0%, rgba(6, 13, 31, 0.6) 50%, transparent 100%);
+  background: linear-gradient(to top, #040a17 0%, rgba(4, 10, 23, 0.6) 50%, transparent 100%);
 }
 
 .reveal-content {
@@ -172,30 +238,35 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
 }
 
 /* Filtros */
+/* Filtros con efecto de escala recuperado */
 .filter-badge {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(0, 242, 254, 0.1);
   padding: 10px 24px;
   border-radius: 30px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: #a0aec0;
+  color: #8a99ad;
+  /* Añadimos transform a la transición para que la escala sea fluida */
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
 }
 
 .filter-badge:hover, .filter-badge.active {
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-  color: #020610;
-  box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+  background: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(127, 0, 255, 0.4);
+  border-color: transparent;
+  /* Recuperamos el efecto de escala al hacer hover o estar activo */
+  transform: scale(1.08); 
 }
 
-/* Ventana Emergente Detallada (Modal con Desenfoque) */
+/* Ventana Emergente Detallada */
 .custom-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(2, 6, 16, 0.7);
+  background: rgba(1, 4, 11, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 10000;
@@ -207,13 +278,13 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
 }
 
 .custom-modal-content {
-  background: #060d1f;
-  border: 1px solid rgba(0, 242, 254, 0.3);
+  background: #040a17;
+  border: 1px solid rgba(127, 0, 255, 0.3);
   border-radius: 20px;
   max-width: 850px;
   width: 100%;
   overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 242, 254, 0.15);
+  box-shadow: 0 25px 50px rgba(127, 0, 255, 0.2);
   animation: scaleUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   position: relative;
 }
@@ -241,9 +312,9 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
 
 /* Secciones Adicionales */
 .curiosity-box {
-  background: rgba(6, 13, 31, 0.6);
+  background: rgba(4, 10, 23, 0.4);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 242, 254, 0.15);
+  border: 1px solid rgba(0, 242, 254, 0.1);
   border-radius: 16px;
   padding: 2rem;
 }
@@ -253,7 +324,7 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
   top: 15px;
   right: 15px;
   z-index: 20;
-  background: rgba(2, 6, 16, 0.7);
+  background: rgba(2, 3, 8, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #fff;
   width: 38px;
@@ -274,24 +345,18 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes scaleUp { from { transform: scale(0.9) translateY(20px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
 
-/* Contenedor relativo para posicionar las flechas */
+/* Contenedor relativo */
 .row-wrapper-relative {
   position: relative;
   width: 100%;
 }
 
-/* Ocultar la barra de scroll por completo pero mantener el deslizamiento */
 .netflix-row {
-  display: flex;
-  overflow-x: auto;
-  gap: 1.5rem;
-  padding: 1.5rem 0.5rem;
-  scroll-behavior: smooth;
-  scrollbar-width: none; /* Oculta en Firefox */
+  scrollbar-width: none;
 }
 
 .netflix-row::-webkit-scrollbar {
-  display: none; /* Oculta en Chrome, Safari y Edge */
+  display: none;
 }
 
 /* Botones de Navegación Flotantes */
@@ -299,8 +364,8 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(2, 6, 16, 0.8);
-  border: 1px solid rgba(0, 242, 254, 0.3);
+  background: rgba(4, 10, 23, 0.9);
+  border: 1px solid rgba(0, 242, 254, 0.2);
   color: #00f2fe;
   width: 50px;
   height: 50px;
@@ -310,27 +375,26 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
   justify-content: center;
   z-index: 10;
   cursor: pointer;
-  opacity: 0; /* Ocultos por defecto */
+  opacity: 0;
   transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+  box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
 }
 
-/* Las flechas aparecen al pasar el cursor sobre la sección del catálogo */
 .row-wrapper-relative:hover .nav-scroll-btn {
   opacity: 1;
 }
 
 .nav-scroll-btn:hover {
-  background: #00f2fe;
-  color: #020610;
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.6);
+  background: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
+  color: white;
+  box-shadow: 0 0 25px rgba(127, 0, 255, 0.5);
   transform: translateY(-50%) scale(1.1);
+  border-color: transparent;
 }
 
-.nav-scroll-btn.left-btn {
-  left: 15px;
-}
+.nav-scroll-btn.left-btn { left: 15px; }
+.nav-scroll-btn.right-btn { right: 15px; }
 
-.nav-scroll-btn.right-btn {
-  right: 15px;
+.text-info {
+  color: #00f2fe !important;
 }
