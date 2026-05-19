@@ -3,20 +3,20 @@ package dam.code.migaleria.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="animal")
+@Table(name = "animal")
 public class Animal {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Double deep;
+    private String deep;
     @Column(columnDefinition = "TEXT")
     private String description;
     private String ocean;
     @Column(columnDefinition = "TEXT")
     private String urlImagen;
 
-    public Animal(String name, Double deep, String description, String ocean, String urlImagen) {
+    public Animal(String name, String deep, String description, String ocean, String urlImagen) {
         this.name = name;
         this.deep = deep;
         this.description = description;
@@ -43,13 +43,9 @@ public class Animal {
         this.name = name;
     }
 
-    public Double getDeep() {
-        return deep;
-    }
+    public String getDeep() { return deep; }
 
-    public void setDeep(Double deep) {
-        this.deep = deep;
-    }
+    public void setDeep(String deep) { this.deep = deep;}
 
     public String getDescription() {
         return description;

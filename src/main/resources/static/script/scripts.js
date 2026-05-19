@@ -1,61 +1,8 @@
-const animalsData = [
-  {
-    id: 1,
-    name: 'Calamar Gigante',
-    zone: 'Abisal',
-    location: 'Océano Pacífico',
-    depth: '1000 metros',
-    description: 'Una criatura misteriosa que habita en las profundidades abisales. Posee ojos del tamaño de pelotas de baloncesto y tentáculos gigantescos capaces de batallar contra cachalotes.',
-    image: 'https://images.unsplash.com/photo-1544626053-8985dc34ae63?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 2,
-    name: 'Medusa Bioluminiscente',
-    zone: 'Abisal',
-    location: 'Aguas profundas globales',
-    depth: '2000 metros',
-    description: 'Capaz de generar su propia luz mediante reacciones químicas en su campana, creando un espectáculo visual hipnótico en la oscuridad total del océano para atraer presas.',
-    image: 'https://images.unsplash.com/photo-1548682570-7d72cb612a22?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 3,
-    name: 'Tiburón Blanco',
-    zone: 'Superficie',
-    location: 'Costas templadas',
-    depth: '0 - 250 metros',
-    description: 'El depredador definitivo de los mares. Su diseño hidrodinámico y sus receptores electromagnéticos casi no han cambiado en millones de años debido a su absoluta perfección evolutiva.',
-    image: 'https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 4,
-    name: 'Mantarraya',
-    zone: 'Pelágica',
-    location: 'Mares tropicales',
-    depth: '0 - 120 metros',
-    description: 'Los gigantes gentiles del mar. Nadan con una gracia inigualable asemejando un vuelo subacuático, filtrando toneladas de plancton mientras planean pacíficamente.',
-    image: 'https://images.unsplash.com/photo-1616235129676-43b9cc20c57c?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 5,
-    name: 'Pez Linterna',
-    zone: 'Abisal',
-    location: 'Zona Antártica',
-    depth: '1500 metros',
-    description: 'Posee un apéndice carnoso sobre su cabeza iluminado por bacterias simbiontes. Utiliza este destello como un señuelo mortal en entornos de oscuridad absoluta.',
-    image: 'https://images.unsplash.com/photo-1522069169874-c58ec4b76be5?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    id: 6,
-    name: 'Dragón Azul',
-    zone: 'Superficie',
-    location: 'Aguas Templadas',
-    depth: '0 metros',
-    description: 'Un diminuto nudibranquio flotante que se alimenta de carabelas portuguesas, asimilando y concentrando sus células urticantes para utilizarlas como su propia y letal defensa.',
-    image: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&q=80&w=800'
-  }
-];
+// 1. VACIAR EL ARRAY (Usamos 'let' para poder reescribirlo después)
+let animalsData = [];
 
-// LÓGICA DEL CURSOR DE RADAR EN VANILLA JS (Evita que React re-renderice en cada pixel movido)
+
+// 2. LÓGICA DEL CURSOR DE RADAR EN VANILLA JS (Se queda exactamente igual)
 const cursorOuter = document.getElementById('custom-cursor');
 const cursorDot = document.getElementById('custom-cursor-dot');
 let mouseX = -100, mouseY = -100;
@@ -85,7 +32,7 @@ function animateRadar() {
 animateRadar();
 
 
-// COMPONENTE REACT: Gestiona exclusivamente el catálogo dinámico
+// 3. COMPONENTE REACT (Se queda exactamente igual)
 function OceanCatalog() {
   const [favorites, setFavorites] = React.useState([]);
   const [activeFilter, setActiveFilter] = React.useState('Todos');
@@ -261,6 +208,64 @@ function OceanCatalog() {
   );
 }
 
-// Inyectar únicamente en el contenedor asignado al catálogo
-const root = ReactDOM.createRoot(document.getElementById('react-catalog-root'));
-root.render(<OceanCatalog />);
+// =================================================================
+// 4. LÓGICA DE EXTRACCIÓN REAL: MAPEO EXACTO DE TU ENTIDAD ANIMAL
+// =================================================================
+async function extraerAnimalesDeJava() {
+  const rootContenedor = document.getElementById('react-catalog-root');
+  
+  try {
+    const response = await fetch('http://localhost:8080/api/animals');
+    
+    if (!response.ok) {
+      throw new Error(`El servidor respondió con código: ${response.status}`);
+    }
+    
+    // Aquí llegan los animales tal y como están en tu clase Java (Entity)
+    const datosDesdeJava = await response.json();
+    
+    // Traducimos los campos de Java al "idioma" que espera tu HTML/React
+    animalsData = datosDesdeJava.map(animal => {
+      return {
+        id: animal.id,
+        name: animal.name,
+        description: animal.description,
+        
+        // 1. ASIGNACIÓN DEL FILTRO: Usamos tu propiedad 'deep' de Java para la 'zone' de React
+        zone: mapearDeepAZona(animal.deep), 
+        
+        // 2. CAMPOS EXTRA: Pasamos tus datos de Java a lo que la tarjeta visual espera pintar
+        location: animal.ocean,    // animal.ocean en Java -> location en React
+        depth: animal.deep,        // animal.deep en Java -> depth en React
+        
+        // 3. SOLUCIÓN A LAS IMÁGENES: Mapeamos tu propiedad 'urlImagen'
+        image: animal.urlImagen    // animal.urlImagen en Java -> image en React
+      };
+    });
+    
+    if (rootContenedor) rootContenedor.innerHTML = '';
+    
+    // Inicializamos React con los datos corregidos
+    const root = ReactDOM.createRoot(rootContenedor);
+    root.render(<OceanCatalog />);
+    
+  } catch (error) {
+    console.error("Error al sincronizar con Spring Boot:", error);
+  }
+}
+
+// Función para que los botones "Superficie", "Pelágica" y "Abisal" funcionen con tu texto de 'deep'
+function mapearDeepAZona(deepTexto) {
+  if (!deepTexto) return 'Todos';
+  
+  const texto = deepTexto.toLowerCase();
+  
+  if (texto.includes('superficie')) return 'Superficie';
+  if (texto.includes('pelagica') || texto.includes('pelágica')) return 'Pelágica';
+  if (texto.includes('abisal')) return 'Abisal';
+  
+  return 'Todos'; 
+}
+
+// Ejecución automática al cargar la página
+extraerAnimalesDeJava();
