@@ -127,7 +127,7 @@ public class DataLoader implements CommandLineRunner {
                             "Pez Opah (Pez Luna Real)", "Pelágica (100 - 500 metros)",
                             "El único pez completamente endotérmico conocido. Al calentar todo su cuerpo (incluidos el cerebro y el corazón), reacciona mucho más rápido que sus presas de sangre fría en aguas profundas.",
                             "Océanos Templados y Tropicales",
-                            "https://i.imgur.com/LCNAwxL.jpeg"
+                            "https://estaticos-cdn.prensaiberica.es/clip/2f8ef736-8ad7-494b-976a-158b7aaf14f4_media-libre-aspect-ratio_default_0.jpg"
                     ),
                     new Animal(
                             "Tiburón Azul", "Pelágica (0 - 350 metros)",
