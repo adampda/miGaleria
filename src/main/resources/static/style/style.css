@@ -204,6 +204,20 @@ body:has(button:hover, .netflix-card:hover, .filter-badge:hover, .close-modal-bt
   box-shadow: 0 15px 35px rgba(127, 0, 255, 0.25) !important;
 }
 
+.ocean-cards-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)) !important;
+  gap: 30px;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.ocean-cards-grid .netflix-card {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
 .card-img-wrapper {
   position: relative;
   height: 380px;
