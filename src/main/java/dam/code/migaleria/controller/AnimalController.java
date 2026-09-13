@@ -27,7 +27,7 @@ public class AnimalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Animal> updateAnimal(@PathVariable Long id, @RequestBody Animal animalDetails) {
+    public ResponseEntity<Animal> updateAnimal(@PathVariable String id, @RequestBody Animal animalDetails) {
         try {
             Animal updatedAnimal = animalService.updateAnimal(id, animalDetails);
             return ResponseEntity.ok(updatedAnimal);
@@ -37,7 +37,7 @@ public class AnimalController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Animal> deleteAnimal(@PathVariable Long id) {
+    public ResponseEntity<Animal> deleteAnimal(@PathVariable String id) {
         try {
             animalService.deleteAnimal(id);
             return ResponseEntity.ok().build();
