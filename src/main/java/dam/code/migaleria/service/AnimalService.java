@@ -1,7 +1,7 @@
 package dam.code.migaleria.service;
 
-import dam.code.migaleria.model.AnimalDocument;
-import dam.code.migaleria.repository.AnimalMongoRepository;
+import dam.code.migaleria.model.Animal;
+import dam.code.migaleria.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,29 +9,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AnimalMongoService {
+public class AnimalService {
 
     @Autowired
-    private AnimalMongoRepository animalMongoRepository;
+    private AnimalRepository animalRepository;
 
-    public List<AnimalDocument> findAll() {
-        return animalMongoRepository.findAll();
+    public List<Animal> findAll() {
+        return animalRepository.findAll();
     }
 
-    public AnimalDocument saveAnimal(AnimalDocument animal) {
-        return animalMongoRepository.save(animal);
+    public Animal saveAnimal(Animal animal) {
+        return animalRepository.save(animal);
     }
 
     public void deleteAnimal(String id) {
-        animalMongoRepository.deleteById(id);
+        animalRepository.deleteById(id);
     }
 
-    public AnimalDocument updateAnimal(String id, AnimalDocument animalUpdated) {
+    public Animal updateAnimal(String id, Animal animalUpdated) {
 
-        Optional<AnimalDocument> animal = animalMongoRepository.findById(id);
+        Optional<Animal> animal = animalRepository.findById(id);
 
         if (animal.isPresent()) {
-            AnimalDocument existingAnimal = animal.get();
+            Animal existingAnimal = animal.get();
 
             if (animalUpdated.getName() != null && !animalUpdated.getName().isEmpty()) {
                 existingAnimal.setName(animalUpdated.getName());
@@ -49,7 +49,7 @@ public class AnimalMongoService {
                 existingAnimal.setUrlImagen(animalUpdated.getUrlImagen());
             }
 
-            return animalMongoRepository.save(existingAnimal);
+            return animalRepository.save(existingAnimal);
         } else {
             throw new RuntimeException("No se encontró el animal con ID: " + id);
         }
