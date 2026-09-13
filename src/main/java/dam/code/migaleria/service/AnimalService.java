@@ -1,7 +1,7 @@
 package dam.code.migaleria.service;
 
-import dam.code.migaleria.model.Animal;
-import dam.code.migaleria.repository.AnimalRepository;
+import dam.code.migaleria.model.AnimalDocument;
+import dam.code.migaleria.repository.AnimalMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,51 +9,47 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AnimalService {
+public class AnimalMongoService {
 
     @Autowired
-    private AnimalRepository animalRepository;
+    private AnimalMongoRepository animalMongoRepository;
 
-    public List<Animal> findAll() {
-        return animalRepository.findAll();
+    public List<AnimalDocument> findAll() {
+        return animalMongoRepository.findAll();
     }
 
-    public Animal saveAnimal(Animal animal) {
-        return animalRepository.save(animal);
+    public AnimalDocument saveAnimal(AnimalDocument animal) {
+        return animalMongoRepository.save(animal);
     }
 
-    public void deleteAnimal(Long id) {
-        animalRepository.deleteById(id);
+    public void deleteAnimal(String id) {
+        animalMongoRepository.deleteById(id);
     }
 
-    public Animal updateAnimal(Long id, Animal animalUpdated) {
+    public AnimalDocument updateAnimal(String id, AnimalDocument animalUpdated) {
 
-        Optional<Animal> animal = animalRepository.findById(id);
+        Optional<AnimalDocument> animal = animalMongoRepository.findById(id);
 
         if (animal.isPresent()) {
-            Animal existingAnimal = animal.get();
+            AnimalDocument existingAnimal = animal.get();
 
             if (animalUpdated.getName() != null && !animalUpdated.getName().isEmpty()) {
                 existingAnimal.setName(animalUpdated.getName());
             }
-
             if (animalUpdated.getDeep() != null) {
                 existingAnimal.setDeep(animalUpdated.getDeep());
             }
-
             if (animalUpdated.getOcean() != null && !animalUpdated.getOcean().isEmpty()) {
                 existingAnimal.setOcean(animalUpdated.getOcean());
             }
-
             if (animalUpdated.getDescription() != null && !animalUpdated.getDescription().isEmpty()) {
                 existingAnimal.setDescription(animalUpdated.getDescription());
             }
-
             if (animalUpdated.getUrlImagen() != null && !animalUpdated.getUrlImagen().isEmpty()) {
                 existingAnimal.setUrlImagen(animalUpdated.getUrlImagen());
             }
 
-            return animalRepository.save(existingAnimal);
+            return animalMongoRepository.save(existingAnimal);
         } else {
             throw new RuntimeException("No se encontró el animal con ID: " + id);
         }
