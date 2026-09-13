@@ -1,19 +1,17 @@
 package dam.code.migaleria.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "animal")
+@Document(collection = "animals")
 public class Animal {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id; 
+
     private String name;
     private String deep;
-    @Column(columnDefinition = "TEXT")
     private String description;
     private String ocean;
-    @Column(columnDefinition = "TEXT")
     private String urlImagen;
 
     public Animal(String name, String deep, String description, String ocean, String urlImagen) {
@@ -24,15 +22,14 @@ public class Animal {
         this.urlImagen = urlImagen;
     }
 
-    public Animal() {
-    }
+    public Animal() {}
 
-    public Long getId() {
-        return id;
+    public String getId() { 
+        return id; 
     }
-
-    public void setId(Long id) {
-        this.id = id;
+    
+    public void setId(String id) { 
+        this.id = id; 
     }
 
     public String getName() {
